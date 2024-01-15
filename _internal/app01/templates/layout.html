@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-3.4.1/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-3.4.1/css/style.css' %}">
+
+    <style>
+        .navbar {
+            border-radius: 0;
+        }
+
+        .active {
+            background-color: #2aabd2 !important;
+        }
+
+
+    </style>
+    {% block css %}{% endblock %}
+</head>
+<body>
+<div id="viewport">
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <header>
+            <a href="#">仓库管理系统</a>
+        </header>
+        <ul class="nav" id="menu">
+            <li><a href="/chart/list/">
+                <img src="/static/img/chart-line.svg"
+                     style="font-size: 18px; height: 18px; width: 18px;"/>
+                数据统计</a></li>
+            <li><a href="/user/list/">
+                <img src="/static/img/in.svg"
+                     style="font-size: 18px; height: 18px; width: 18px;"/>
+                入库物资管理</a></li>
+            <li><a href="/out/list/">
+                <img src="/static/img/out.svg"
+                     style="font-size: 18px; height: 18px; width: 18px;"/>
+                出库物资管理</a></li>
+            <li><a href="/pretty/list/">
+                <img src="/static/img/things.svg"
+                     style="font-size: 18px; height: 18px; width: 18px;"/>
+                物资管理</a></li>
+            <li><a href="/paper/list/">
+                <img src="/static/img/note-text-outline.svg"
+                     style="font-size: 18px; height: 18px; width: 18px;"/>
+                日报</a></li>
+            <li><a href="/task/list/">
+                <img src="/static/img/task.svg"
+                     style="font-size: 18px; height: 18px; width: 18px;"/>
+                任务管理</a></li>
+            <li><a href="/city/list/">
+                <img src="/static/img/list.svg"
+                     style="font-size: 18px; height: 18px; width: 18px;"/>
+                入库单出库单列表</a></li>
+            <li><a href="/classification/list/">
+                <img src="/static/img/format-list-bulleted-type.svg"
+                     style="font-size: 18px; height: 18px; width: 18px;"/>
+                种类</a></li>
+            <li><a href="/depart/list/">
+                <img src="/static/img/supplier.svg"
+                     style="font-size: 18px; height: 18px; width: 18px;"/>
+                物资供应商</a></li>
+            <li><a href="/order/list/">
+                <img src="/static/img/order.svg"
+                     style="font-size: 18px; height: 18px; width: 18px;"/>
+                订单管理</a></li>
+            {#                <li><a href="/upload/form/">Form上传</a></li>#}
+            <li><a href="/admin/list/">
+                <img src="/static/img/account-box.svg" 
+                     style="font-size: 18px; height: 18px; width: 18px;"/>
+                管理员账户</a></li>
+        </ul>
+    </div>
+
+    <!-- Content -->
+    <div id="content">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">{{ request.session.info.name }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">个人资料</a></li>
+                            <li><a href="#">我的信息</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/logout/">注销</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+</div>
+
+
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-3.4.1/js/bootstrap.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        var url = window.location.pathname;
+        $('#menu a').each(function () {
+            var href = $(this).attr('href');
+            if (href == url) {
+                $(this).parent().addClass('active');
+            } else {
+                $(this).parent().removeClass('active');
+            }
+        });
+    });
+</script>
+{% block js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,101 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"> 新建出库物资 </h3>
+            </div>
+            <div class="panel-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group" hidden="hidden">
+                        <label>出库或入库</label>
+                        <input type="text" class="form-control" placeholder="出库或入库" value="出库" name="outIn"/>
+                    </div>
+                    <div class="form-group">
+                        <label>物资名称</label>
+                        <input type="text" class="form-control" placeholder="物资名称" name="user"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>物资编号</label>
+                        <input type="text" class="form-control" placeholder="物资编号" name="pwd"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>数量</label>
+                        <input type="text" class="form-control" placeholder="数量" name="age"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>长度</label>
+                        <input type="text" class="form-control" placeholder="长度" name="ac"/>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>出库时间</label>
+                        <input id="dt" type="text" autocomplete="off" class="form-control" placeholder="出库时间"
+                               name="ctime"/>
+                    </div>
+
+{#                    <div class="form-group">#}
+{#                        <label>保养时间</label>#}
+{#                        <input id="dt2" type="text" autocomplete="off" class="form-control" placeholder="保养时间"#}
+{#                               name="mtime"/>#}
+{#                    </div>#}
+
+
+                    <div class="form-group">
+                        <label>物资状态</label>
+                        <select class="form-control" name="gd">
+                            {% for item in classification_list %}
+                                <option value="{{ item.id }}">{{ item.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>物资供应商</label>
+                        <select class="form-control" name="dp">
+                            {% for item in depart_list %}
+                                <option value="{{ item.id }}">{{ item.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">提 交</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+{% block js %}
+    <script src="{% static 'plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js' %}"></script>
+    <script>
+        $(function () {
+            $('#dt').datepicker({
+                format: 'yyyy-mm-dd',
+                language: "zh-CN",
+                autoclose: true
+            });
+
+            $('#dt2').datepicker({
+                format: 'yyyy-mm-dd',
+                language: "zh-CN",
+                autoclose: true
+            });
+
+        })
+    </script>
+{% endblock %}

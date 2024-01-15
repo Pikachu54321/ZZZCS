@@ -1,0 +1,122 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <div style="margin-bottom: 10px" class="clearfix">
+            <div style="float: right;width: 300px;">
+                <form method="get">
+                    <div class="input-group">
+                        <input type="text" name="date" id="date" class="form-control" value="{{ search_data }}">
+                        <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        </button>
+                      </span>
+                    </div>
+                </form>
+            </div>
+            {#            <a class="btn btn-success" href="/user/model/form/add/">#}
+            {#                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>#}
+            {#                新建用户ModelForm#}
+            {#            </a>#}
+        </div>
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                物资列表
+                <button onclick="printTable()">打印表格</button>
+
+            </div>
+
+            <!-- Table -->
+            <table class="table table-bordered" id="paperTable">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>物资名称</th>
+                    <th>物资编号</th>
+                    <th>数量</th>
+                    <th>长度</th>
+                    <th>出入库时间</th>
+                    <th>保养时间</th>
+                    <th>分类</th>
+                    <th>物资供应商</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for obj in queryset %}
+                    <tr>
+                        <th>{{ obj.id }}</th>
+                        <td>{{ obj.name }}</td>
+                        <td>{{ obj.password }}</td>
+                        <td>{{ obj.age }}</td>
+                        <td>{{ obj.account }}</td>
+                        <td>{{ obj.create_time|date:"Y-m-d" }}</td>
+                        <td>{{ obj.maintenance_time|date:"Y-m-d" }}</td>
+                        <td>{{ obj.out_or_in }}</td>
+                        <td>{{ obj.depart.title }}</td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+        <ul class="pagination">
+            {{ page_string }}
+        </ul>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js' %}"></script>
+    <script>
+        $(function () {
+            var today = new Date();
+            var yyyy = today.getFullYear();
+            var mm = today.getMonth() + 1;
+            var dd = today.getDate();
+            today = yyyy + '-' + (mm < 10 ? '0' + mm : mm) + '-' + (dd < 10 ? '0' + dd : dd);
+
+            $('#date').datepicker({
+                format: 'yyyy-mm-dd',
+                language: "zh-CN",
+                autoclose: true,
+                {#todayHighlight: true,#}
+                {#initialDate: today#}
+                {#format: 'yyyy-mm-dd',#}
+                {#startDate: '0',#}
+                {#language: "zh-CN",#}
+                {#autoclose: true#}
+            });
+        });
+
+        function printTable() {
+            // 获取表格元素
+            var table = document.getElementById("paperTable");
+
+            // 创建一个新的窗口（或新标签页）来显示打印预览
+            var printWindow = window.open("", "_blank");
+
+            // 将表格内容复制到新窗口的文档中
+            printWindow.document.write("<html><head><title>打印预览</title>");
+            printWindow.document.write("</head><body >");
+            printWindow.document.write(table.outerHTML);
+            printWindow.document.write("</body></html>");
+
+            // 设置新窗口的CSS样式
+            printWindow.document.write("<style scoped>");
+            printWindow.document.write("body { font-family: Arial, sans-serif; margin: 0; padding: 0; }");
+            printWindow.document.write("table { border-collapse: collapse;border: 2px solid #000;}");
+            printWindow.document.write("th, td { border: 1px solid black; text-align: left; font-weight: bold；background-color: #ccc;}");
+            printWindow.document.write("</style>");
+
+            // 调用打印功能（使用浏览器的默认打印设置）
+            printWindow.document.close();
+            printWindow.print();
+        }
+    </script>
+{% endblock %}
